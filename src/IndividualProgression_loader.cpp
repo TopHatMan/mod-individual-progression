@@ -53,7 +53,7 @@ void AddSC_karazhan_70();
 void AddSC_the_eye_70();
 void AddSC_serpentshrine_cavern_70();
 
-void Addmod_individual_progressionScripts()
+void Addmod_03_individual_progressionScripts()
 {
     AddSC_mod_individual_progression();
     AddSC_boss_onyxia_40();
