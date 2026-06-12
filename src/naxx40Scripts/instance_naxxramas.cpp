@@ -28,6 +28,7 @@
 #include "Map.h"
 #include "WorldSession.h"
 
+
 BossBoundaryData const boundaries =
 {
     /* Arachnid Quarter */
@@ -204,8 +205,9 @@ public:
         LoadDoorData(doorData);
         LoadObjectData(creatureData, gameObjectData);
         LoadBossBoundaries(boundaries);
-        
+
         // NX40 specific data
+
         if (instance->GetDifficulty() == RAID_DIFFICULTY_10MAN_HEROIC)
             LoadObjectData(creatureDataNX40, gameObjectData);
 
