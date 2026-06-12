@@ -4,7 +4,6 @@
 #include "SpellAuraEffects.h"
 #include "SpellScript.h"
 #include "naxxramas.h"
-#include "IndividualProgression.h"
 
 class NaxxPlayerScript : public PlayerScript
 {
@@ -13,7 +12,7 @@ public:
 
     void OnPlayerBeforeChooseGraveyard(Player* player, TeamId /*teamId*/, bool /*nearCorpse*/, uint32& graveyardOverride) override
     {
-        if (player->GetMapId() == MAP_NAXX && player->GetMap()->GetSpawnMode() == RAID_DIFFICULTY_10MAN_NORMAL)
+        if (player->GetMapId() == MAP_NAXX && player->GetMap()->GetSpawnMode() == RAID_DIFFICULTY_10MAN_HEROIC)
         {
             graveyardOverride = NAXX40_GRAVEYARD;
         }
@@ -27,21 +26,28 @@ public:
 
     bool OnTrigger(Player* player, AreaTrigger const* areaTrigger) override
     {
-        // Removed ALL difficulty logic for testing
+        // Do not allow entrance to Naxx 40 from Northrend
+        // Change 10 man heroic to regular 10 man, as when 10 man heroic is not available
+        Difficulty diff = player->GetGroup() ? player->GetGroup()->GetDifficulty(true) : player->GetDifficulty(true);
+        if (diff == RAID_DIFFICULTY_10MAN_HEROIC)
+        {
+            player->SetRaidDifficulty(RAID_DIFFICULTY_10MAN_NORMAL);
+        }
         switch (areaTrigger->entry)
         {
-        case 5191:
-            player->TeleportTo(533, 3005.68f, -3447.77f, 293.93f, 4.65f);
-            break;
-        case 5192:
-            player->TeleportTo(533, 3019.34f, -3434.36f, 293.99f, 6.27f);
-            break;
-        case 5193:
-            player->TeleportTo(533, 3005.9f, -3420.58f, 294.11f, 1.58f);
-            break;
-        case 5194:
-            player->TeleportTo(533, 2992.5f, -3434.42f, 293.94f, 3.13f);
-            break;
+            // Naxx 10 and 25 entrances
+            case 5191:
+                player->TeleportTo(533, 3005.68f, -3447.77f, 293.93f, 4.65f);
+                break;
+            case 5192:
+                player->TeleportTo(533, 3019.34f, -3434.36f, 293.99f, 6.27f);
+                break;
+            case 5193:
+                player->TeleportTo(533, 3005.9f, -3420.58f, 294.11f, 1.58f);
+                break;
+            case 5194:
+                player->TeleportTo(533, 2992.5f, -3434.42f, 293.94f, 3.13f);
+                break;
         }
         return true;
     }
