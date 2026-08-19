@@ -61,7 +61,7 @@ public:
 
         static ChatCommandTable commandTable =
         {
-            { "ip", ipTable },
+            { "ipp", ipTable },
         };
 
         return commandTable;
