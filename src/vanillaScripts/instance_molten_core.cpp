@@ -170,7 +170,7 @@ public:
                             continue;
                         }
 
-                        if (GetBossState(linkedBossObjData[i].bossId) == DONE)
+                        if (GetBossState(linkedBossObjData[i].bossId) == DONE && IsRuneDoused(i))
                         {
                             go->DespawnOrUnsummon();
                         }
@@ -200,7 +200,17 @@ public:
                         if (GetBossState(linkedBossObjData[i].bossId) == DONE)
                         {
                             go->SetGoState(GO_STATE_ACTIVE);
-                            _runeStatus[go->GetEntry()] = true;
+                            if (IsRuneDoused(i))
+                            {
+                                go->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+                                _runeStatus[go->GetEntry()] = true;
+                            }
+                            else
+                            {
+                                go->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
+                                _runesGUIDs[linkedBossObjData[i].bossId] = go->GetGUID();
+                                _runeStatus[go->GetEntry()] = false;
+                            }
                         }
                         else
                         {
@@ -363,7 +373,30 @@ public:
             if (index == DATA_RUNE_STATUS)
             {
                 _runeStatus[data] = true;
+                for (uint8 i = 0; i < MAX_MC_LINKED_BOSS_OBJ; ++i)
+                {
+                    if (linkedBossObjData[i].runeId == data)
+                    {
+                        _dousedRunesMask |= uint8(1u << i);
+                        SaveToDB();
+                        break;
+                    }
+                }
             }
+        }
+
+        void ReadSaveDataMore(std::istringstream& data) override
+        {
+            uint32 savedMask = 0;
+            if (data >> savedMask)
+            {
+                _dousedRunesMask = uint8(savedMask & ALL_RUNES_DOUSED_MASK);
+            }
+        }
+
+        void WriteSaveDataMore(std::ostringstream& data) override
+        {
+            data << uint32(_dousedRunesMask);
         }
 
         void DoAction(int32 action) override
@@ -453,19 +486,18 @@ public:
 
         bool CheckFirelordRunes() const
         {
-            for (auto const& status : _runeStatus)
-            {
-                if (!status.second)
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return _dousedRunesMask == ALL_RUNES_DOUSED_MASK;
         }
 
 
     private:
+        static constexpr uint8 ALL_RUNES_DOUSED_MASK = (1u << MAX_MC_LINKED_BOSS_OBJ) - 1u;
+
+        bool IsRuneDoused(uint8 index) const
+        {
+            return (_dousedRunesMask & uint8(1u << index)) != 0;
+        }
+
         std::unordered_map<uint32 /*bossid*/, ObjectGuid /*circleGUID*/> _circlesGUIDs;
         std::unordered_map<uint32/*bossid*/, ObjectGuid/*runeGUID*/> _runesGUIDs;
         std::unordered_map<uint32 /*bossid*/, bool /*status*/> _runeStatus;
@@ -483,6 +515,7 @@ public:
         ObjectGuid _cacheOfTheFirelordGUID;
         ObjectGuid _garrGUID;
         ObjectGuid _magmadarGUID;
+        uint8 _dousedRunesMask = 0;
     };
 
     InstanceScript* GetInstanceScript(InstanceMap* map) const override
@@ -500,6 +533,17 @@ public:
 
     bool OnGossipHello(Player* player, GameObject* go) override
     {
+        constexpr uint32 ITEM_AQUAL_QUINTESSENCE = 17333;
+        constexpr uint32 ITEM_ETERNAL_QUINTESSENCE = 22754;
+
+        if (!player->HasItemCount(ITEM_AQUAL_QUINTESSENCE, 1, false) &&
+            !player->HasItemCount(ITEM_ETERNAL_QUINTESSENCE, 1, false))
+            return false;
+
+        if (player->HasItemCount(ITEM_AQUAL_QUINTESSENCE, 1, false) &&
+            !player->HasItemCount(ITEM_ETERNAL_QUINTESSENCE, 1, false))
+            player->DestroyItemCount(ITEM_AQUAL_QUINTESSENCE, 1, true);
+
         go->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE);
 
         if (GameObject* circle = go->GetLinkedTrap())
