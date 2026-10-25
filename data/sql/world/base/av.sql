@@ -17,6 +17,10 @@ DELETE FROM `creature_formations` WHERE `leaderGUID` IN
  @CGUID+851, @CGUID+853, @CGUID+855, @CGUID+857, @CGUID+859, @CGUID+861, @CGUID+863, @CGUID+864, @CGUID+865, @CGUID+866, @CGUID+867, @CGUID+868,
  @CGUID+870, @CGUID+872, @CGUID+874, @CGUID+876, @CGUID+878, @CGUID+880, @CGUID+882, @CGUID+895, @CGUID+898);
 
+-- clean up AV entries for people that upgrade an exisiting acore_world database
+DELETE FROM `creature_formations` WHERE `leaderGUID` BETWEEN @CGUID+640 AND @CGUID+700;
+DELETE FROM `creature_formations` WHERE `leaderGUID` BETWEEN @CGUID+733 AND @CGUID+744;
+
 INSERT INTO `creature_formations` (`leaderGUID`, `memberGUID`, `dist`, `angle`, `groupAI`, `point_1`, `point_2`) VALUES
 --
 (@CGUID+610, @CGUID+610, 0, 0, 515, 0, 0), -- alliance
@@ -3388,14 +3392,20 @@ INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`, `event_
 (-(@CGUID+339), 0, 4, 0, 0, 0, 100, 0, 13000, 13000, 9000, 9000, 0, 0, 11, 21188, 0, 0, 0, 0, 0, 2, 0,0,0,0,0,0,0,0,   'Wing Commander Vipore (strike) - In Combat - Cast Stun Bomb Attack');
 
 UPDATE `creature_template` SET `AIName` = 'SmartAI' WHERE `entry` IN
-(10981, 10990, 12051, 12127, 12159, 13256, 13419, 14282, 14283, 14284, 12050, 13326, 13331, 13422, 12053, 
- 13328, 13332, 13421, 13358, 13359, 13440, 13441, 13576, 13577, 13324, 13333, 13424, 13329, 13334, 13425,
+(10981, 10990, 12048, 12050, 12051, 12052, 12053, 12127, 12159, 13256, 13324, 13326, 13328, 13331, 13332, 13333,
+ 13358, 13359, 13419, 13421, 13422, 13424, 13425, 13329, 13334, 13440, 13441, 13576, 13577, 14282, 14283, 14284,
  113256, 113419, 112050, 112053, 113236, 113284, 113442, 113443, 113441, 113577);
 
 DELETE FROM `smart_scripts` WHERE `source_type` = 0 AND `entryorguid` IN
-(10981, 10990, 12051, 12127, 12159, 13256, 13419, 14282, 14283, 14284, 12050, 13326, 13331, 13422, 12053, 
- 13328, 13332, 13421, 13358, 13359, 13440, 13441, 13576, 13577, 13324, 13333, 13424, 13329, 13334, 13425,
+(10981, 10990, 12048, 12050, 12051, 12052, 12053, 12127, 12159, 13256, 13324, 13326, 13328, 13331, 13332, 13333,
+ 13358, 13359, 13419, 13421, 13422, 13424, 13425, 13329, 13334, 13440, 13441, 13576, 13577, 14282, 14283, 14284,
  113256, 113419, 112050, 112053, 113236, 113284, 113442, 113443, 113441, 113577);
+
+DELETE FROM `smart_scripts` WHERE `source_type` = 0 AND `entryorguid` IN
+(-(@CGUID+606), -(@CGUID+607), -(@CGUID+608), -(@CGUID+609), -(@CGUID+610), -(@CGUID+613), -(@CGUID+615),
+ -(@CGUID+617), -(@CGUID+619), -(@CGUID+621), -(@CGUID+623), -(@CGUID+625), -(@CGUID+627), -(@CGUID+629), -(@CGUID+630),
+ -(@CGUID+701), -(@CGUID+703), -(@CGUID+705), -(@CGUID+707), -(@CGUID+709), -(@CGUID+711), -(@CGUID+713), -(@CGUID+714), -(@CGUID+715),
+ -(@CGUID+716), -(@CGUID+717), -(@CGUID+720), -(@CGUID+722), -(@CGUID+724), -(@CGUID+726), -(@CGUID+728), -(@CGUID+730), -(@CGUID+732));
 
 UPDATE `gameobject_template` SET `AIName` = 'SmartGameObjectAI' WHERE `entry` IN (178465, 178670);
 DELETE FROM `smart_scripts` WHERE `source_type` = 1 AND `entryorguid` IN (-657971, -657972, 178465, 178670);
@@ -3602,6 +3612,43 @@ INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`, `event_
 (13424, 0, 0, 0, 4, 0, 100, 0, 0, 0, 0, 0, 0, 0, 11, 22120, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,                  'Champion Guardsman - On Aggro - Cast Charge'),
 (13424, 0, 1, 0, 0, 0, 100, 0, 4000, 6000, 7000, 9000, 0, 0, 11, 11976, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,      'Champion Guardsman - In Combat - Cast Strike'),
 --
+(-(@CGUID+606), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+6060, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Alliance Sentinel - On Respawn - Start Waypoints'),
+(-(@CGUID+607), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+6070, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Alliance Sentinel - On Respawn - Start Waypoints'),
+(-(@CGUID+608), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+6080, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Alliance Sentinel - On Respawn - Start Waypoints'),
+(-(@CGUID+609), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+6090, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Alliance Sentinel - On Respawn - Start Waypoints'),
+(-(@CGUID+610), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+6100, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Alliance Sentinel - On Respawn - Start Waypoints'),
+--
+(-(@CGUID+613), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+6130, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Stormpike Guardsman - On Respawn - Start Waypoints'),
+(-(@CGUID+615), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+6150, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Stormpike Guardsman - On Respawn - Start Waypoints'),
+(-(@CGUID+617), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+6170, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Stormpike Guardsman - On Respawn - Start Waypoints'),
+(-(@CGUID+619), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+6190, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Stormpike Guardsman - On Respawn - Start Waypoints'),
+(-(@CGUID+621), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+6210, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Stormpike Guardsman - On Respawn - Start Waypoints'),
+(-(@CGUID+623), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+6230, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Stormpike Guardsman - On Respawn - Start Waypoints'),
+(-(@CGUID+625), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+6250, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Stormpike Guardsman - On Respawn - Start Waypoints'),
+(-(@CGUID+627), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+6270, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Stormpike Guardsman - On Respawn - Start Waypoints'),
+(-(@CGUID+629), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+6290, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Stormpike Guardsman - On Respawn - Start Waypoints'),
+(-(@CGUID+630), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+6300, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Stormpike Guardsman - On Respawn - Start Waypoints'),
+--
+(-(@CGUID+701), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+7010, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Frostwolf Legionnaire - On Respawn - Start Waypoints'),
+(-(@CGUID+703), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+7030, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Frostwolf Legionnaire - On Respawn - Start Waypoints'),
+(-(@CGUID+705), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+7050, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Frostwolf Legionnaire - On Respawn - Start Waypoints'),
+(-(@CGUID+707), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+7070, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Frostwolf Legionnaire - On Respawn - Start Waypoints'),
+(-(@CGUID+709), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+7090, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Frostwolf Legionnaire - On Respawn - Start Waypoints'),
+(-(@CGUID+711), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+7110, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Frostwolf Legionnaire - On Respawn - Start Waypoints'),
+(-(@CGUID+713), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+7130, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Frostwolf Legionnaire - On Respawn - Start Waypoints'),
+(-(@CGUID+714), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+7140, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Frostwolf Legionnaire - On Respawn - Start Waypoints'),
+(-(@CGUID+715), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+7150, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Frostwolf Legionnaire - On Respawn - Start Waypoints'),
+(-(@CGUID+716), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+7160, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Frostwolf Legionnaire - On Respawn - Start Waypoints'),
+(-(@CGUID+717), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+7170, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Frostwolf Legionnaire - On Respawn - Start Waypoints'),
+--
+(-(@CGUID+720), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+7200, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Frostwolf Warrior - On Respawn - Start Waypoints'),
+(-(@CGUID+722), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+7220, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Frostwolf Warrior - On Respawn - Start Waypoints'),
+(-(@CGUID+724), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+7240, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Frostwolf Warrior - On Respawn - Start Waypoints'),
+(-(@CGUID+726), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+7260, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Frostwolf Warrior - On Respawn - Start Waypoints'),
+(-(@CGUID+728), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+7280, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Frostwolf Warrior - On Respawn - Start Waypoints'),
+(-(@CGUID+730), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+7300, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Frostwolf Warrior - On Respawn - Start Waypoints'),
+(-(@CGUID+732), 0, 0, 0, 11, 0, 100, 0, 0, 0, 0, 0, 0, 0, 232, @WPID+7320, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,   'Frostwolf Warrior - On Respawn - Start Waypoints'),
+--
 (13358, 0, 0, 0, 1, 0, 100, 513, 0, 0, 0, 0, 0, 0, 21, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,                    'Stormpike Bowman - Out of Combat - Disable Combat Movement (No Repeat)'),
 (13358, 0, 1, 0, 10, 0, 100, 0, 0, 80, 2300, 3900, 0, 0, 11, 22121, 64, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0,         'Stormpike Bowman - Within 0-80 Range - Cast Shoot'), -- OOC
 (13358, 0, 2, 0, 0, 0, 100, 0, 0, 0, 2300, 3900, 0, 0, 11, 22121, 64, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,           'Stormpike Bowman - Within 0-80 Range - Cast Shoot'), -- IC
@@ -3619,6 +3666,7 @@ INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`, `event_
 
 
 /* MISC */
+UPDATE `creature_template` SET `flags_extra` = flags_extra|134217728 WHERE `entry` IN (12051, 12127);
 UPDATE `creature_template` SET `name` = 'Commander Dardosh' WHERE `entry` = 13140;
 UPDATE `creature_template` SET `name` = 'Lieutenant Murp' WHERE `entry` = 13146;
 UPDATE `creature_template` SET `speed_walk` = 2, `flags_extra` = 0 WHERE entry IN (13256, 13419); -- remove CREATURE_FLAG_EXTRA_INSTANCE_BIND for elemental bosses
@@ -3721,67 +3769,67 @@ INSERT INTO `creature_text` (`CreatureID`, `GroupID`, `ID`, `Text`, `Type`, `Lan
 DELETE FROM `creature_text` WHERE `CreatureID` IN (113179, 113180, 113181, 113437, 113438, 113439, 213179, 213180, 213181, 213437, 213438, 213439);
 INSERT INTO `creature_text` (`CreatureID`, `GroupID`, `ID`, `Text`, `Type`, `Language`, `Probability`, `Emote`, `Duration`, `Sound`, `BroadcastTextId`, `TextRange`, `comment`) VALUES 
 --
-(113179, 0, 0, '', 12, 7, 100, 0, 0, 0, 8604, 0,  'Guse - On Rescue'),
-(113179, 1, 0, '', 12, 7, 100, 0, 0, 0, 8605, 0,  'Guse - On Return to Base'),
-(113179, 2, 0, '', 14, 7, 100, 0, 0, 0, 8673, 0,  'Guse - On Airstrike Ready'),
-(113179, 3, 0, '', 14, 7, 100, 0, 0, 0, 10339, 0, 'Guse - On Visible in Field of Strife'),
+(113179, 0, 0, '', 12, 0, 100, 0, 0, 0, 8604, 0,  'Guse - On Rescue'),
+(113179, 1, 0, '', 12, 0, 100, 0, 0, 0, 8605, 0,  'Guse - On Return to Base'),
+(113179, 2, 0, '', 14, 0, 100, 0, 0, 0, 8673, 0,  'Guse - On Airstrike Ready'),
+(113179, 3, 0, '', 14, 0, 100, 0, 0, 0, 10339, 0, 'Guse - On Visible in Field of Strife'),
 --
-(113180, 0, 0, '', 12, 7, 100, 0, 0, 0, 8606, 0,  'Jeztor - On Rescue'),
-(113180, 1, 0, '', 12, 7, 100, 0, 0, 0, 8607, 0,  'Jeztor - On Return to Base'),
-(113180, 2, 0, '', 14, 7, 100, 0, 0, 0, 8674, 0,  'Jeztor - On Airstrike Ready'),
-(113180, 3, 0, '', 14, 7, 100, 0, 0, 0, 10343, 0, 'Jeztor - On Visible in Field of Strife'),
-(113180, 4, 0, '', 14, 7, 100, 0, 0, 0, 10342, 0, 'Jeztor - On kill'),
+(113180, 0, 0, '', 12, 0, 100, 0, 0, 0, 8606, 0,  'Jeztor - On Rescue'),
+(113180, 1, 0, '', 12, 0, 100, 0, 0, 0, 8607, 0,  'Jeztor - On Return to Base'),
+(113180, 2, 0, '', 14, 0, 100, 0, 0, 0, 8674, 0,  'Jeztor - On Airstrike Ready'),
+(113180, 3, 0, '', 14, 0, 100, 0, 0, 0, 10343, 0, 'Jeztor - On Visible in Field of Strife'),
+(113180, 4, 0, '', 14, 0, 100, 0, 0, 0, 10342, 0, 'Jeztor - On kill'),
 --
-(113181, 0, 0, '', 12, 7, 100, 0, 0, 0, 8609, 0,  'Mulverick - On Rescue'),
-(113181, 1, 0, '', 12, 7, 100, 0, 0, 0, 8611, 0,  'Mulverick - On Return to Base'),
-(113181, 2, 0, '', 14, 7, 100, 0, 0, 0, 8672, 0,  'Mulverick - On Airstrike Ready'),
-(113181, 3, 0, '', 14, 7, 100, 0, 0, 0, 10347, 0, 'Mulverick - On Visible in Field of Strife'),
-(113181, 4, 0, '', 14, 7, 100, 0, 0, 0, 8610, 0,  'Mulverick - On kill'),
+(113181, 0, 0, '', 12, 0, 100, 0, 0, 0, 8609, 0,  'Mulverick - On Rescue'),
+(113181, 1, 0, '', 12, 0, 100, 0, 0, 0, 8611, 0,  'Mulverick - On Return to Base'),
+(113181, 2, 0, '', 14, 0, 100, 0, 0, 0, 8672, 0,  'Mulverick - On Airstrike Ready'),
+(113181, 3, 0, '', 14, 0, 100, 0, 0, 0, 10347, 0, 'Mulverick - On Visible in Field of Strife'),
+(113181, 4, 0, '', 14, 0, 100, 0, 0, 0, 8610, 0,  'Mulverick - On kill'),
 --
-(113437, 0, 0, '', 12, 7, 100, 0, 0, 0, 8771, 0,  'Ichman - On Rescue'),
-(113437, 1, 0, '', 12, 7, 100, 0, 0, 0, 8772, 0,  'Ichman - On Last Waypoint'), -- This is far enough! Meet me back at base! - Ichman runs back invisible and friendly from here
-(113437, 2, 0, '', 14, 7, 100, 0, 0, 0, 8791, 0,  'Ichman - On Airstrike Ready'),
-(113437, 3, 0, '', 14, 7, 100, 0, 0, 0, 10358, 0, 'Ichman - On Visible in Field of Strife'),
-(113437, 4, 0, '', 14, 7, 100, 0, 0, 0, 8773, 0,  'Ichman - On kill'),
+(113437, 0, 0, '', 12, 0, 100, 0, 0, 0, 8771, 0,  'Ichman - On Rescue'),
+(113437, 1, 0, '', 12, 0, 100, 0, 0, 0, 8772, 0,  'Ichman - On Last Waypoint'), -- This is far enough! Meet me back at base! - Ichman runs back invisible and friendly from here
+(113437, 2, 0, '', 14, 0, 100, 0, 0, 0, 8791, 0,  'Ichman - On Airstrike Ready'),
+(113437, 3, 0, '', 14, 0, 100, 0, 0, 0, 10358, 0, 'Ichman - On Visible in Field of Strife'),
+(113437, 4, 0, '', 14, 0, 100, 0, 0, 0, 8773, 0,  'Ichman - On kill'),
 --
-(113438, 0, 0, '', 12, 7, 100, 0, 0, 0, 8769, 0,  'Slidore - On Rescue'),
-(113438, 1, 0, '', 14, 7, 100, 0, 0, 0, 8794, 0,  'Slidore - On Airstrike Ready'),
-(113438, 2, 0, '', 14, 7, 100, 0, 0, 0, 10356, 0, 'Slidore - On Visible in Field of Strife'),
+(113438, 0, 0, '', 12, 0, 100, 0, 0, 0, 8769, 0,  'Slidore - On Rescue'),
+(113438, 1, 0, '', 14, 0, 100, 0, 0, 0, 8794, 0,  'Slidore - On Airstrike Ready'),
+(113438, 2, 0, '', 14, 0, 100, 0, 0, 0, 10356, 0, 'Slidore - On Visible in Field of Strife'),
 --
-(113439, 0, 0, '', 12, 7, 100, 0, 0, 0, 8770, 0,  'Vipore - On Rescue'),
-(113439, 1, 0, '', 14, 7, 100, 0, 0, 0, 8797, 0,  'Vipore - On Airstrike Ready'),
-(113439, 2, 0, '', 14, 7, 100, 0, 0, 0, 10357, 0, 'Vipore - On Visible in Field of Strife'),
+(113439, 0, 0, '', 12, 0, 100, 0, 0, 0, 8770, 0,  'Vipore - On Rescue'),
+(113439, 1, 0, '', 14, 0, 100, 0, 0, 0, 8797, 0,  'Vipore - On Airstrike Ready'),
+(113439, 2, 0, '', 14, 0, 100, 0, 0, 0, 10357, 0, 'Vipore - On Visible in Field of Strife'),
 --
-(213179, 0, 0, '', 12, 7, 100, 0, 0, 0, 8604, 0,  'Guse - On Rescue'),
-(213179, 1, 0, '', 12, 7, 100, 0, 0, 0, 8605, 0,  'Guse - On Return to Base'),
-(213179, 2, 0, '', 14, 7, 100, 0, 0, 0, 8673, 0,  'Guse - On Airstrike Ready'),
-(213179, 3, 0, '', 14, 7, 100, 0, 0, 0, 10339, 0, 'Guse - On Visible in Field of Strife'),
+(213179, 0, 0, '', 12, 0, 100, 0, 0, 0, 8604, 0,  'Guse - On Rescue'),
+(213179, 1, 0, '', 12, 0, 100, 0, 0, 0, 8605, 0,  'Guse - On Return to Base'),
+(213179, 2, 0, '', 14, 0, 100, 0, 0, 0, 8673, 0,  'Guse - On Airstrike Ready'),
+(213179, 3, 0, '', 14, 0, 100, 0, 0, 0, 10339, 0, 'Guse - On Visible in Field of Strife'),
 --
-(213180, 0, 0, '', 12, 7, 100, 0, 0, 0, 8606, 0,  'Jeztor - On Rescue'),
-(213180, 1, 0, '', 12, 7, 100, 0, 0, 0, 8607, 0,  'Jeztor - On Return to Base'),
-(213180, 2, 0, '', 14, 7, 100, 0, 0, 0, 8674, 0,  'Jeztor - On Airstrike Ready'),
-(213180, 3, 0, '', 14, 7, 100, 0, 0, 0, 10343, 0, 'Jeztor - On Visible in Field of Strife'),
-(213180, 4, 0, '', 14, 7, 100, 0, 0, 0, 10342, 0, 'Jeztor - On kill'),
+(213180, 0, 0, '', 12, 0, 100, 0, 0, 0, 8606, 0,  'Jeztor - On Rescue'),
+(213180, 1, 0, '', 12, 0, 100, 0, 0, 0, 8607, 0,  'Jeztor - On Return to Base'),
+(213180, 2, 0, '', 14, 0, 100, 0, 0, 0, 8674, 0,  'Jeztor - On Airstrike Ready'),
+(213180, 3, 0, '', 14, 0, 100, 0, 0, 0, 10343, 0, 'Jeztor - On Visible in Field of Strife'),
+(213180, 4, 0, '', 14, 0, 100, 0, 0, 0, 10342, 0, 'Jeztor - On kill'),
 --
-(213181, 0, 0, '', 12, 7, 100, 0, 0, 0, 8609, 0,  'Mulverick - On Rescue'),
-(213181, 1, 0, '', 12, 7, 100, 0, 0, 0, 8611, 0,  'Mulverick - On Return to Base'),
-(213181, 2, 0, '', 14, 7, 100, 0, 0, 0, 8672, 0,  'Mulverick - On Airstrike Ready'),
-(213181, 3, 0, '', 14, 7, 100, 0, 0, 0, 10347, 0, 'Mulverick - On Visible in Field of Strife'),
-(213181, 4, 0, '', 14, 7, 100, 0, 0, 0, 8610, 0,  'Mulverick - On kill'),
+(213181, 0, 0, '', 12, 0, 100, 0, 0, 0, 8609, 0,  'Mulverick - On Rescue'),
+(213181, 1, 0, '', 12, 0, 100, 0, 0, 0, 8611, 0,  'Mulverick - On Return to Base'),
+(213181, 2, 0, '', 14, 0, 100, 0, 0, 0, 8672, 0,  'Mulverick - On Airstrike Ready'),
+(213181, 3, 0, '', 14, 0, 100, 0, 0, 0, 10347, 0, 'Mulverick - On Visible in Field of Strife'),
+(213181, 4, 0, '', 14, 0, 100, 0, 0, 0, 8610, 0,  'Mulverick - On kill'),
 --
-(213437, 0, 0, '', 12, 7, 100, 0, 0, 0, 8771, 0,  'Ichman - On Rescue'),
-(213437, 1, 0, '', 12, 7, 100, 0, 0, 0, 8772, 0,  'Ichman - On Last Waypoint'), -- This is far enough! Meet me back at base! - Ichman runs back invisible and friendly from here
-(213437, 2, 0, '', 14, 7, 100, 0, 0, 0, 8791, 0,  'Ichman - On Airstrike Ready'),
-(213437, 3, 0, '', 14, 7, 100, 0, 0, 0, 10358, 0, 'Ichman - On Visible in Field of Strife'),
-(213437, 4, 0, '', 14, 7, 100, 0, 0, 0, 8773, 0,  'Ichman - On kill'),
+(213437, 0, 0, '', 12, 0, 100, 0, 0, 0, 8771, 0,  'Ichman - On Rescue'),
+(213437, 1, 0, '', 12, 0, 100, 0, 0, 0, 8772, 0,  'Ichman - On Last Waypoint'), -- This is far enough! Meet me back at base! - Ichman runs back invisible and friendly from here
+(213437, 2, 0, '', 14, 0, 100, 0, 0, 0, 8791, 0,  'Ichman - On Airstrike Ready'),
+(213437, 3, 0, '', 14, 0, 100, 0, 0, 0, 10358, 0, 'Ichman - On Visible in Field of Strife'),
+(213437, 4, 0, '', 14, 0, 100, 0, 0, 0, 8773, 0,  'Ichman - On kill'),
 --
-(213438, 0, 0, '', 12, 7, 100, 0, 0, 0, 8769, 0,  'Slidore - On Rescue'),
-(213438, 1, 0, '', 14, 7, 100, 0, 0, 0, 8794, 0,  'Slidore - On Airstrike Ready'),
-(213438, 2, 0, '', 14, 7, 100, 0, 0, 0, 10356, 0, 'Slidore - On Visible in Field of Strife'),
+(213438, 0, 0, '', 12, 0, 100, 0, 0, 0, 8769, 0,  'Slidore - On Rescue'),
+(213438, 1, 0, '', 14, 0, 100, 0, 0, 0, 8794, 0,  'Slidore - On Airstrike Ready'),
+(213438, 2, 0, '', 14, 0, 100, 0, 0, 0, 10356, 0, 'Slidore - On Visible in Field of Strife'),
 --
-(213439, 0, 0, '', 12, 7, 100, 0, 0, 0, 8770, 0,  'Vipore - On Rescue'),
-(213439, 1, 0, '', 14, 7, 100, 0, 0, 0, 8797, 0,  'Vipore - On Airstrike Ready'),
-(213439, 2, 0, '', 14, 7, 100, 0, 0, 0, 10357, 0, 'Vipore - On Visible in Field of Strife');
+(213439, 0, 0, '', 12, 0, 100, 0, 0, 0, 8770, 0,  'Vipore - On Rescue'),
+(213439, 1, 0, '', 14, 0, 100, 0, 0, 0, 8797, 0,  'Vipore - On Airstrike Ready'),
+(213439, 2, 0, '', 14, 0, 100, 0, 0, 0, 10357, 0, 'Vipore - On Visible in Field of Strife');
 
 DELETE FROM `creature_text` WHERE `CreatureID` IN (@CENTRY+4, @CENTRY+5, @CENTRY+6, @CENTRY+7, @CENTRY+8, @CENTRY+9);
 INSERT INTO `creature_text` (`CreatureID`, `GroupID`, `ID`, `Text`, `Type`, `Language`, `Probability`, `Emote`, `Duration`, `Sound`, `BroadcastTextId`, `TextRange`, `comment`) VALUES 
@@ -3796,36 +3844,36 @@ INSERT INTO `creature_text` (`CreatureID`, `GroupID`, `ID`, `Text`, `Type`, `Lan
 DELETE FROM `broadcast_text` WHERE `ID` IN (8604, 8605, 8606, 8607, 8609, 8610, 8611, 8672, 8673, 8674, 8769, 8770, 8771, 8772, 8773, 8791, 8794, 8797, 10339, 10342, 10343, 10347, 10356, 10357, 10358);
 INSERT INTO `broadcast_text` (`ID`, `LanguageID`, `MaleText`, `FemaleText`, `EmoteID1`, `EmoteID2`, `EmoteID3`, `EmoteDelay1`, `EmoteDelay2`, `EmoteDelay3`, `SoundEntriesId`, `EmotesID`, `Flags`, `VerifiedBuild`) VALUES
 -- Guse
-(8604,  7, '', 'Cover me, soldier! I have to make it back to our base and get the fleet prepped for an aerial assault!', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
-(8605,  7, '', 'WOOT! Made it!', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
-(8673,  7, '', 'War Riders are now ready! Soldiers of the Horde, I need your assistance.', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
-(10339, 7, '', 'Guse is joining the battle! Time to take out the Stormpike filth!', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
+(8604,  0, '', 'Cover me, soldier! I have to make it back to our base and get the fleet prepped for an aerial assault!', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
+(8605,  0, '', 'WOOT! Made it!', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
+(8673,  0, '', 'War Riders are now ready! Soldiers of the Horde, I need your assistance.', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
+(10339, 0, '', 'Guse is joining the battle! Time to take out the Stormpike filth!', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
 -- Jeztor
-(8606,  7, '', 'There\'s no time to waste, trooper. I must get back to base immediately! Cover me!', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
-(8607,  7, '', 'Let\'s get down to business!', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
-(8674,  7, '', 'Jeztor\'s Riders are ready! Soldiers of the Horde, report for duty!', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
-(10342, 7, '', 'Jeztor\'s coming for you, Stormpike!', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
-(10343, 7, '', 'Jeztor lives! Time to light up the Valley sky, Commander.', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
+(8606,  0, '', 'There\'s no time to waste, trooper. I must get back to base immediately! Cover me!', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
+(8607,  0, '', 'Let\'s get down to business!', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
+(8674,  0, '', 'Jeztor\'s Riders are ready! Soldiers of the Horde, report for duty!', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
+(10342, 0, '', 'Jeztor\'s coming for you, Stormpike!', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
+(10343, 0, '', 'Jeztor lives! Time to light up the Valley sky, Commander.', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
 -- Mulverick
-(8609,  7, 'I need to get back to my ride. Search and destroy imminent! Cover me! On my six! GO GO GO!', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
-(8610,  7, 'I come for you, puny Alliance!', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
-(8611,  7, 'Good work, soldier. Now we light the fires and spite their ire!', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
-(8672,  7, 'Yeee hawww! Mulverick\'s fleet is ready to rock. All able bodied Horde soldiers need request a beacon and try their damndest to plant it so that my War Riders can home in for the aerial assault.', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
-(10347, 7, 'Incoming aerial support to Dun Baldar! Stormpike bow down!', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
+(8609,  0, 'I need to get back to my ride. Search and destroy imminent! Cover me! On my six! GO GO GO!', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
+(8610,  0, 'I come for you, puny Alliance!', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
+(8611,  0, 'Good work, soldier. Now we light the fires and spite their ire!', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
+(8672,  0, 'Yeee hawww! Mulverick\'s fleet is ready to rock. All able bodied Horde soldiers need request a beacon and try their damndest to plant it so that my War Riders can home in for the aerial assault.', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
+(10347, 0, 'Incoming aerial support to Dun Baldar! Stormpike bow down!', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
 -- Ichman
-(8771,  7, 'Just get me close enough to our base and I can channel a teleport!', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
-(8772,  7, 'This is far enough! Meet me back at base!', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
-(8773,  7, 'You\'re going down, Mulv!', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
-(8791,  7, 'Soldiers of Stormpike, come to my aid! The beacon must be planted.', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
-(10358, 7, 'Drek\'Thar, I\'m coming for you!', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
+(8771,  0, 'Just get me close enough to our base and I can channel a teleport!', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
+(8772,  0, 'This is far enough! Meet me back at base!', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
+(8773,  0, 'You\'re going down, Mulv!', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
+(8791,  0, 'Soldiers of Stormpike, come to my aid! The beacon must be planted.', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
+(10358, 0, 'Drek\'Thar, I\'m coming for you!', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
 -- Slidore
-(8769,  7, 'Cover me, I\'m making a break for it!', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
-(8794,  7, 'My flight is ready! Soldiers come to my aid!', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
-(10356, 7, 'I\'m coming Frostwolf, and this time you\'re gonna feel the flames!', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
+(8769,  0, 'Cover me, I\'m making a break for it!', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
+(8794,  0, 'My flight is ready! Soldiers come to my aid!', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
+(10356, 0, 'I\'m coming Frostwolf, and this time you\'re gonna feel the flames!', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
 -- Vipore
-(8770,  7, 'We\'ve got no time to waste. This is a really long run! Cover me!', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
-(8797,  7, 'Their spirits are restored! The gryphons are ready to strike! Come, soldiers! Come to my side!', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
-(10357, 7, 'Senior Wing Commander Vipore, launching. Pray for a swift death, Frostwolf.', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019);
+(8770,  0, 'We\'ve got no time to waste. This is a really long run! Cover me!', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
+(8797,  0, 'Their spirits are restored! The gryphons are ready to strike! Come, soldiers! Come to my side!', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019),
+(10357, 0, 'Senior Wing Commander Vipore, launching. Pray for a swift death, Frostwolf.', '', 0, 0, 0, 0, 0, 0, 0, 0, 1, 18019);
 
 -- Cavalry Commanders
 DELETE FROM `gossip_menu` WHERE `MenuID` IN (65701, 65702);
@@ -3914,3 +3962,204 @@ INSERT INTO `spell_dbc` (`ID`, `Category`, `DispelType`, `Mechanic`, `Attributes
 0,0,28,0,0,0,0,0,0.0,0.0,0.0,0,0,0,0,0,0,18,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0.0,0,0,0,0,0,0,@CENTRY+9,0,0,64,0,0,0,0,0,0.0,0.0,0.0,0,0,0,0,0,0,0,0,0,353,0,1,0,0,
 'Planting Vipore\'s Beacon','','','','','','','','','','','','','','','',16712190,'','','','','','','','','','','','','','','','',16712188,499479,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16712190,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16712188,0,0,0,0,0,0,0,0,0,0,0,0,1.0,0.0,0.0,0,0,0,0,0,0,1,0,0,0,1.0,1.0,1.0,0,0);
+
+
+-- vanilla_creature updates, these need to be merged still
+
+/*  Winterax Troll  */
+UPDATE `creature_template` SET `speed_walk` = 1.0, `DamageModifier` = 5.957447, `RangeAttackTime` = 1292 WHERE `entry` = 10983;
+
+/*  Winterax Berserker  */
+UPDATE `creature_template` SET `speed_walk` = 1.0, `DamageModifier` = 5.231561, `ArmorModifier` = 1.15, `RangeAttackTime` = 1283 WHERE `entry` = 10984;
+
+/*  Alterac Ram  */
+UPDATE `creature_template` SET `minlevel` = 50, `maxlevel` = 51, `speed_run` = 2.57143, `mingold` = 63, `maxgold` = 316 WHERE `entry` = 10990;
+
+/*  Winterax Witch Doctor  */
+UPDATE `creature_template` SET `speed_walk` = 1.0, `DamageModifier` = 9.844560, `ArmorModifier` = 1.1, `RangeAttackTime` = 1274, `unit_class` = 2 WHERE `entry` = 11679;
+
+/*  Alliance Sentinel  */
+UPDATE `creature_template` SET `DamageModifier` = 2.5, `BaseAttackTime` = 2000, `RangeAttackTime` = 1551, `mingold` = 63, `maxgold` = 316 WHERE `entry` = 12048;
+
+/*  Stormpike Defender  */
+UPDATE `creature_template` SET `DamageModifier` = 2.8, `ArmorModifier` = 1.35, `mingold` = 70, `maxgold` = 604 WHERE `entry` = 12050;
+
+/*  Frostwolf Legionnaire  */
+UPDATE `creature_template` SET `DamageModifier` = 1.7, `mingold` = 83, `maxgold` = 416 WHERE `entry` = 12051;
+
+/*  Frostwolf Warrior  */
+UPDATE `creature_template` SET `DamageModifier` = 2.5, `BaseAttackTime` = 2000, `RangeAttackTime` = 1551, `mingold` = 63, `maxgold` = 316 WHERE `entry` = 12052;
+
+/*  Frostwolf Guardian  */
+UPDATE `creature_template` SET `DamageModifier` = 2.8, `ArmorModifier` = 1.35, `mingold` = 70, `maxgold` = 352 WHERE `entry` = 12053;
+
+/*  Primalist Thurloga  */
+UPDATE `creature_template` SET `DamageModifier` = 4.0, `mingold` = 1, `maxgold` = 886 WHERE `entry` = 13236;
+
+/*  Lokholar the Ice Lord  */
+UPDATE `creature_template` SET `rank` = 3, `DamageModifier` = 3.85, `ArmorModifier` = 1.75, `mingold` = 1, `maxgold` = 886 WHERE `entry` = 13256;
+
+/*  Frostwolf Shaman  */
+UPDATE `creature_template` SET `DamageModifier` = 3.5, `mingold` = 157, `maxgold` = 786 WHERE `entry` = 13284;
+
+/*  Seasoned Guardsman  */
+UPDATE `creature_template` SET `DamageModifier` = 2.8, `BaseAttackTime` = 2000, `RangeAttackTime` = 1551, `mingold` = 63, `maxgold` = 316 WHERE `entry` = 13324;
+
+/*  Seasoned Mountaineer  */
+UPDATE `creature_template` SET `DamageModifier` = 2.6, `BaseAttackTime` = 2000, `RangeAttackTime` = 1551, `mingold` = 63, `maxgold` = 316 WHERE `entry` = 13325;
+
+/*  Seasoned Defender  */
+UPDATE `creature_template` SET `DamageModifier` = 2.9, `ArmorModifier` = 1.25, `mingold` = 70, `maxgold` = 352 WHERE `entry` = 13326;
+
+/*  Seasoned Sentinel  */
+UPDATE `creature_template` SET `minlevel` = 56, `maxlevel` = 56, `DamageModifier` = 2.6, `BaseAttackTime` = 2000, `RangeAttackTime` = 1551, `mingold` = 63, `maxgold` = 316 WHERE `entry` = 13327;
+
+/*  Seasoned Guardian  */
+UPDATE `creature_template` SET `DamageModifier` = 2.9, `mingold` = 70, `maxgold` = 352 WHERE `entry` = 13328;
+
+/*  Seasoned Legionnaire  */
+UPDATE `creature_template` SET `DamageModifier` = 2.8, `BaseAttackTime` = 2000, `RangeAttackTime` = 1540, `mingold` = 65, `maxgold` = 326 WHERE `entry` = 13329;
+
+/*  Seasoned Warrior  */
+UPDATE `creature_template` SET `DamageModifier` = 2.65, `ArmorModifier` = 0.75, `BaseAttackTime` = 2000, `RangeAttackTime` = 1551, `mingold` = 63, `maxgold` = 316 WHERE `entry` = 13330;
+
+/*  Veteran Defender  */
+UPDATE `creature_template` SET `DamageModifier` = 3.0, `ArmorModifier` = 1.25, `mingold` = 73, `maxgold` = 367 WHERE `entry` = 13331;
+
+/*  Veteran Guardian  */
+UPDATE `creature_template` SET `DamageModifier` = 3.0, `mingold` = 73, `maxgold` = 367 WHERE `entry` = 13332;
+
+/*  Veteran Guardsman  */
+UPDATE `creature_template` SET `DamageModifier` = 2.9, `BaseAttackTime` = 2000, `RangeAttackTime` = 1551, `mingold` = 67, `maxgold` = 333 WHERE `entry` = 13333;
+
+/*  Veteran Legionnaire  */
+UPDATE `creature_template` SET `DamageModifier` = 2.95, `BaseAttackTime` = 2000, `RangeAttackTime` = 1551, `mingold` = 67, `maxgold` = 333 WHERE `entry` = 13334;
+
+/*  Veteran Mountaineer  */
+UPDATE `creature_template` SET `DamageModifier` = 2.9, `BaseAttackTime` = 2000, `RangeAttackTime` = 1551, `mingold` = 67, `maxgold` = 333 WHERE `entry` = 13335;
+
+/*  Veteran Sentinel  */
+UPDATE `creature_template` SET `DamageModifier` = 2.9, `BaseAttackTime` = 2000, `RangeAttackTime` = 1551, `mingold` = 67, `maxgold` = 333 WHERE `entry` = 13336;
+
+/*  Veteran Warrior  */
+UPDATE `creature_template` SET `DamageModifier` = 2.9, `BaseAttackTime` = 2000, `RangeAttackTime` = 1551, `mingold` = 67, `maxgold` = 333 WHERE `entry` = 13337;
+
+/*  Ivus the Forest Lord  */
+UPDATE `creature_template` SET `minlevel` = 61, `maxlevel` = 61, `rank` = 3, `DamageModifier` = 5.3, `ArmorModifier` = 1.7, `BaseAttackTime` = 2000, `RangeAttackTime` = 1255, `unit_class` = 2, `mingold` = 505, `maxgold` = 2525 WHERE `entry` = 13419;
+
+/*  Stormpike Mine Layer  */
+UPDATE `creature_template` SET `speed_walk` = 1.0, `DamageModifier` = 22.298456, `ArmorModifier` = 1.5, `RangeAttackTime` = 1283 WHERE `entry` = 13356;
+
+/*  Frostwolf Mine Layer  */
+UPDATE `creature_template` SET `speed_walk` = 1.0, `DamageModifier` = 22.298456, `ArmorModifier` = 1.5, `RangeAttackTime` = 1283 WHERE `entry` = 13357;
+
+/*  Stormpike Bowman  */
+UPDATE `creature_template` SET `DamageModifier` = 2.3, `mingold` = 65, `maxgold` = 648 WHERE `entry` = 13358;
+
+/*  Frostwolf Bowman  */
+UPDATE `creature_template` SET `DamageModifier` = 2.3, `mingold` = 65, `maxgold` = 765 WHERE `entry` = 13359;
+
+/*  Master Engineer Zinfizzlex  */
+UPDATE `creature_template` SET `speed_walk` = 1.0, `DamageModifier` = 9.478261, `ArmorModifier` = 1.1, `RangeAttackTime` = 1265 WHERE `entry` = 13377;
+
+/*  Frostwolf Shredder Unit  */
+UPDATE `creature_template` SET `speed_walk` = 1.0, `DamageModifier` = 4.260870, `ArmorModifier` = 1.1, `RangeAttackTime` = 1265, `mingold` = 99, `maxgold` = 497 WHERE `entry` = 13378;
+
+/*  Stormpike Shredder Unit  */
+UPDATE `creature_template` SET `speed_walk` = 1.0, `DamageModifier` = 4.170213, `ArmorModifier` = 1.1, `RangeAttackTime` = 1292, `mingold` = 98, `maxgold` = 491 WHERE `entry` = 13416;
+
+/*  Champion Guardian  */
+UPDATE `creature_template` SET `DamageModifier` = 3.0, `mingold` = 73, `maxgold` = 367 WHERE `entry` = 13421;
+
+/*  Champion Defender  */
+UPDATE `creature_template` SET `DamageModifier` = 3.1, `ArmorModifier` = 1.25, `BaseAttackTime` = 2000, `RangeAttackTime` = 1540, `mingold` = 73, `maxgold` = 367 WHERE `entry` = 13422;
+
+/*  Champion Guardsman  */
+UPDATE `creature_template` SET `DamageModifier` = 3.0, `BaseAttackTime` = 2000, `RangeAttackTime` = 1551, `mingold` = 67, `maxgold` = 333 WHERE `entry` = 13424;
+
+/*  Champion Legionnaire  */
+UPDATE `creature_template` SET `DamageModifier` = 3.0, `ArmorModifier` = 0.9, `BaseAttackTime` = 2000, `RangeAttackTime` = 1551, `mingold` = 67, `maxgold` = 333 WHERE `entry` = 13425;
+
+/*  Champion Mountaineer  */
+UPDATE `creature_template` SET `DamageModifier` = 2.8, `BaseAttackTime` = 2000, `RangeAttackTime` = 1551, `mingold` = 67, `maxgold` = 333 WHERE `entry` = 13426;
+
+/*  Champion Sentinel  */
+UPDATE `creature_template` SET `DamageModifier` = 2.85, `BaseAttackTime` = 2000, `RangeAttackTime` = 1551, `mingold` = 67, `maxgold` = 333 WHERE `entry` = 13427;
+
+/*  Champion Warrior  */
+UPDATE `creature_template` SET `DamageModifier` = 2.8, `BaseAttackTime` = 2000, `RangeAttackTime` = 1551 WHERE `entry` = 13428;
+
+/*  Wing Commander Ichman  */
+UPDATE `creature_template` SET `DamageModifier` = 5.0, `ArmorModifier` = 1.1, `mingold` = 152, `maxgold` = 761 WHERE `entry` = 13437;
+
+/*  Wing Commander Slidore  */
+UPDATE `creature_template` SET `DamageModifier` = 5.0, `mingold` = 1, `maxgold` = 858 WHERE `entry` = 13438;
+
+/*  Wing Commander Vipore  */
+UPDATE `creature_template` SET `DamageModifier` = 5.0, `ArmorModifier` = 1.05, `mingold` = 1, `maxgold` = 830 WHERE `entry` = 13439;
+
+/*  Frostwolf Wolf Rider  */
+UPDATE `creature_template` SET `speed_walk` = 1.0, `DamageModifier` = 3.5, `BaseAttackTime` = 2000, `RangeAttackTime` = 1292, `mingold` = 152, `maxgold` = 761 WHERE `entry` = 13440;
+
+/*  Frostwolf Wolf Rider Commander  */
+UPDATE `creature_template` SET `speed_run` = 1.14286, `DamageModifier` = 5.45, `ArmorModifier` = 1.1, `mingold` = 1, `maxgold` = 886 WHERE `entry` = 13441;
+
+/*  Arch Druid Renferal  */
+UPDATE `creature_template` SET `DamageModifier` = 4.0, `mingold` = 1, `maxgold` = 844 WHERE `entry` = 13442;
+
+/*  Druid of the Grove  */
+UPDATE `creature_template` SET `DamageModifier` = 3.5, `mingold` = 162, `maxgold` = 812 WHERE `entry` = 13443;
+
+/*  Field Marshal Teravaine  */
+UPDATE `creature_template` SET `speed_walk` = 1.0, `DamageModifier` = 9.553024, `ArmorModifier` = 1.15, `RangeAttackTime` = 1255, `mingold` = 173, `maxgold` = 864 WHERE `entry` = 13446;
+
+/*  Corporal Noreg Stormpike  */
+UPDATE `creature_template` SET `DamageModifier` = 3.0, `ArmorModifier` = 1.25, `mingold` = 1, `maxgold` = 873 WHERE `entry` = 13447;
+
+/*  Sergeant Yazra Bloodsnarl  */
+UPDATE `creature_template` SET `mingold` = 1, `maxgold` = 752 WHERE `entry` = 13448;
+
+/*  Warmaster Garrick  */
+UPDATE `creature_template` SET `speed_walk` = 1.0, `DamageModifier` = 6.173913, `ArmorModifier` = 1.15, `RangeAttackTime` = 1265, `mingold` = 1, `maxgold` = 858 WHERE `entry` = 13449;
+
+/*  Stormpike Ram Rider  */
+UPDATE `creature_template` SET `speed_walk` = 1.0, `DamageModifier` = 6.390328, `RangeAttackTime` = 1274, `mingold` = 162, `maxgold` = 812 WHERE `entry` = 13576;
+
+/*  Stormpike Ram Rider Commander  */
+UPDATE `creature_template` SET `speed_run` = 1.14286, `DamageModifier` = 4.0, `ArmorModifier` = 1.1, `mingold` = 1, `maxgold` = 886 WHERE `entry` = 13577;
+
+/*  Frostwolf Explosives Expert  */
+UPDATE `creature_template` SET `speed_walk` = 1.0, `DamageModifier` = 9.090909, `RangeAttackTime` = 1283, `mingold` = 1, `maxgold` = 858 WHERE `entry` = 13597;
+
+/*  Stormpike Explosives Expert  */
+UPDATE `creature_template` SET `speed_walk` = 1.0, `DamageModifier` = 9.153713, `ArmorModifier` = 1.1, `RangeAttackTime` = 1274, `mingold` = 1, `maxgold` = 873 WHERE `entry` = 13598;
+
+/*  Frostwolf Stable Master  */
+UPDATE `creature_template` SET `DamageModifier` = 5.3, `ArmorModifier` = 1.1, `mingold` = 1, `maxgold` = 873 WHERE `entry` = 13616;
+
+/*  Stormpike Stable Master  */
+UPDATE `creature_template` SET `DamageModifier` = 3.0, `mingold` = 1, `maxgold` = 873 WHERE `entry` = 13617;
+
+/*  Stabled Frostwolf  */
+UPDATE `creature_template` SET `maxlevel` = 50, `speed_walk` = 1.0, `DamageModifier` = 1.854305, `ArmorModifier` = 0.75, `RangeAttackTime` = 1661, `mingold` = 45, `maxgold` = 224 WHERE `entry` = 13618;
+
+/*  Stabled Alterac Ram  */
+UPDATE `creature_template` SET `speed_walk` = 1.0, `DamageModifier` = 2.553191, `ArmorModifier` = 0.75, `RangeAttackTime` = 1551, `mingold` = 63, `maxgold` = 316 WHERE `entry` = 13676;
+
+/*  Commander Mortimer  */
+UPDATE `creature_template` SET `DamageModifier` = 5.0, `mingold` = 162, `maxgold` = 812 WHERE `entry` = 13318;
+
+/*  Commander Duffy  */
+UPDATE `creature_template` SET `speed_walk` = 1.0, `DamageModifier` = 5.0, `mingold` = 1, `maxgold` = 858 WHERE `entry` = 13319;
+
+/*  Commander Karl Philips  */
+UPDATE `creature_template` SET `DamageModifier` = 5.0, `mingold` = 1, `maxgold` = 886 WHERE `entry` = 13320;
+
+/*  Winterax Mystic  */
+UPDATE `creature_template` SET `speed_walk` = 1.0, `DamageModifier` = 6.468085, `ArmorModifier` = 1.25, `RangeAttackTime` = 1292, `unit_class` = 2 WHERE `entry` = 13956;
+
+/*  Winterax Warrior  */
+UPDATE `creature_template` SET `speed_walk` = 1.0, `DamageModifier` = 6.131261, `ArmorModifier` = 1.1, `RangeAttackTime` = 1274 WHERE `entry` = 13957;
+
+/*  Winterax Seer  */
+UPDATE `creature_template` SET `speed_walk` = 1.0, `DamageModifier` = 6.518010, `ArmorModifier` = 1.25, `RangeAttackTime` = 1283, `unit_class` = 2 WHERE `entry` = 13958;
